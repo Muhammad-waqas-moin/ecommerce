@@ -3,6 +3,10 @@ const catchAysnError = require("../middleware/catchAsynError");
 exports.CreateUser = catchAysnError(async (req, res, next) => {
   const { email } = req.body;
   console.log(email);
+  const userMail = await User.findOne({ email });
+  if (userMail) {
+    return next(new ErrorHandler("User Already Exists", 400));
+  }
 
   const user = await User.create({
     name: "waqas",
